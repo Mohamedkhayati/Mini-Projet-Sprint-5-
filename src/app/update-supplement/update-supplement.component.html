@@ -1,0 +1,91 @@
+<div class="container">
+    <div>
+      <h2>Modifier un Supplement :</h2>
+    </div>
+    <form>
+      <div hidden class="col-sm-2 col-md-2 col-lg-2">
+        <label>ID Supplement</label>
+        <input
+          type="text"
+          [(ngModel)]="currentSupplement.idSupplement"
+          name="idSupplement"
+          class="form-control"
+        />
+      </div>
+  
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Nom Supplement</label>
+        <input
+          type="text"
+          [(ngModel)]="currentSupplement.nomSupplement"
+          name="nomSupplement"
+          class="form-control"
+        />
+      </div>
+  
+      <div class="col-sm-2 col-md-2 col-lg-2">
+        <label>Prix Supplement</label>
+        <input
+          type="number"
+          [(ngModel)]="currentSupplement.prixSupplement"
+          name="prixSupplement"
+          class="form-control"
+        />
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>dosage Supplement</label>
+        <input
+          type="text"
+          [(ngModel)]="currentSupplement.dosageSupplement"
+          name="dosageSupplement"
+          class="form-control"
+        />
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>quantity</label>
+        <input
+          type="text"
+          [(ngModel)]="currentSupplement.quantity"
+          name="quantity"
+          class="form-control"
+        />
+      </div>
+  
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Date création</label>
+        <input
+          type="date"
+          [ngModel]="currentSupplement.dateCreation | date: 'yyyy-MM-dd'"
+          (ngModelChange)="currentSupplement.dateCreation = $event"
+          name="dateCreation"
+          class="form-control"
+        />
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Nutritional</label>
+        <select
+          class="form-control form-control-lg"
+          id="idNut"
+          name="idNut"
+          [(ngModel)]="updatedNutId"
+        >
+          <option
+            *ngFor="let nut of nutritionals; trackBy: trackByNutritional"
+            [value]="nut.idNut"
+          >
+            {{ nut.nomNut }}
+          </option>
+        </select>
+      </div>
+  
+      <div class="mt-2">
+        <button
+          type="submit"
+          (click)="updateSupplement()"
+          class="btn btn-success"
+        >
+          Modifier
+        </button>
+      </div>
+    </form>
+  </div>

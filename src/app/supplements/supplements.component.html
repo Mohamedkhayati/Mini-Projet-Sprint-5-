@@ -1,0 +1,48 @@
+<div class="container">
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Id</th>
+                        <th>Nom</th>
+                        <th>Prix</th>
+                        <th>Dosage</th>
+                        <th>Quantity</th>
+                        <th>Date Création</th>
+                        <th>Nutritionnelle</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (supplement of supplements; track supplement.idSupplement; let index = $index; let nbr = $count; let first = $first; let last = $last) {
+                        <tr>
+                            <td>{{ index + 1 }}</td>
+                            <td>{{ supplement.idSupplement }}</td>
+                            <td>{{ supplement.nomSupplement }}</td>
+                            <td>{{ supplement.prixSupplement }}</td>
+                            <td>{{ supplement.dosageSupplement }} g</td>
+                            <td>{{ supplement.quantity }}</td>
+                            <td>{{ supplement.dateCreation | date: 'dd/MM/yyyy' }}</td>
+                            <td>{{supplement.nutritional.nomNut}}</td>
+                            <td><a class="btn btn-danger" (click)="supprimerSupplement(supplement)">Supprimer</a>
+                            <a class="btn btn-success" [routerLink]="['/updateSupplement', supplement.idSupplement]">Modifier</a></td>
+
+
+                        </tr>
+                        @if (last) {
+                            <tr>
+                                <td colspan="7"><h1>Nombre : {{ nbr }}</h1></td>
+                            </tr>
+                        }
+                    } @empty {
+                        <tr>
+                            <td colspan="7"><h1>Aucun supplement trouvé !</h1></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
