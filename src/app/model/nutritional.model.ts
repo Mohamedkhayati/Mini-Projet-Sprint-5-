@@ -1,5 +1,4 @@
-export class Nutritional {
-    idNut!: number;  
-    nomNut!: string;
-  }
-  
+export interface Nutritional {
+  idNutri: number;
+  nomNutri: string;
+}

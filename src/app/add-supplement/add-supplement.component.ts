@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Supplement } from '../model/supplement.model';
 import { SupplementService } from '../services/supplement.service';
 import { Nutritional } from '../model/nutritional.model';
@@ -14,31 +14,66 @@ import { CommonModule } from '@angular/common';
 })
 export class AddSupplementComponent implements OnInit {
   newSupplement = new Supplement();
-  msg: string = '';
-  nutritional: Nutritional[] = [];
+  nutritionals: Nutritional[] = [];
   newIdNut: number | null = null;
-  newNutritional!: Nutritional;
+  loading: boolean = false;
+  errorMessage: string = '';
+  successMessage: string = '';
 
   constructor(
     private supplementService: SupplementService,
     private router: Router
   ) {}
 
-  ngOnInit() {
-    this.nutritional = this.supplementService.listeNutritionals();
+  ngOnInit(): void {
+    this.loadNutritionals();
+  }
+
+  loadNutritionals() {
+    this.loading = true;
+    this.errorMessage = '';
+    this.supplementService.listeNutritionals().subscribe({
+      next: (cats) => {
+        console.log(cats);
+        this.nutritionals = cats._embedded.nutritionals;
+        this.loading = false;
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors du chargement des catégories : ' + err.message;
+        this.loading = false;
+      }
+    });
   }
 
   trackByNut(index: number, nut: Nutritional): number {
-    return nut.idNut;
+    return nut.idNutri;
   }
 
   addSupplement() {
-    if (this.newIdNut !== null) {
-      this.newNutritional = this.supplementService.consulterNutritional(this.newIdNut);
-      this.newSupplement.nutritional = this.newNutritional;
-      this.supplementService.ajouterSupplement(this.newSupplement);
-      this.msg = 'Supplément ajouté avec succès !';
-      this.router.navigate(['supplements']);
-    } 
+    if (this.newIdNut === null) {
+      this.errorMessage = 'Veuillez sélectionner une catégorie.';
+      return;
+    }
+    this.loading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
+    const selectedNut = this.nutritionals.find(nut => nut.idNutri === this.newIdNut);
+    if (!selectedNut) {
+      this.errorMessage = 'Catégorie sélectionnée non valide.';
+      this.loading = false;
+      return;
+    }
+    this.newSupplement.nutritional = selectedNut;
+    this.supplementService.ajouterSupplement(this.newSupplement).subscribe({
+      next: () => {
+        this.successMessage = 'Supplément ajouté avec succès !';
+        this.loading = false;
+        this.router.navigate(['supplements']);
+      },
+      error: (err) => {
+        this.errorMessage = 'Erreur lors de l\'ajout du supplément : ' + err.message;
+        this.loading = false;
+      }
+    });
   }
 }

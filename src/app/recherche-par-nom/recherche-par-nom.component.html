@@ -1,0 +1,65 @@
+<div class="container">
+    <div class="row">
+      <div class="col-md-6">
+        <form class="form-inline">
+          <div class="form-group mx-sm-3 mb-2 mt-2">
+            <label>Search by Name</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="nomSupplement"
+              name="nomSupplement"
+              placeholder="Enter supplement name"
+            />
+            <button
+              type="button"
+              (click)="rechercherSupps()"
+              class="btn btn-primary mb-2 ml-2"
+            >
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group mx-sm-3 mb-2 mt-2">
+          <label>Instant Search</label>
+          <input
+            class="form-control"
+            #searchTerm
+            (keyup)="onKeyUp(searchTerm.value)"
+            placeholder="Search by name or brand"
+          />
+        </div>
+      </div>
+    </div>
+  
+    <div class="card shadow mb-4">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Dosage</th>
+              <th>Price</th>
+              <th>Brand</th>
+              <th>Date</th>
+              <th>Nutritional</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let supplement of supplements">
+              <td>{{ supplement.idSupplement }}</td>
+              <td>{{ supplement.nomSupplement }}</td>
+              <td>{{ supplement.dosageSupplement }}</td>
+              <td>{{ supplement.prixSupplement }}</td>
+              <td>{{ supplement.marqueSupplement }}</td>
+              <td>{{ supplement.dateCreation | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ supplement.nutritional?.nomNutri || 'N/A' }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>

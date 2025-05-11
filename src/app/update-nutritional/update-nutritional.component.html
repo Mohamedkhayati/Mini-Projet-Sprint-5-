@@ -1,0 +1,33 @@
+<form>
+    <div class="mb-3" [hidden]="ajout">
+      <label class="form-label">ID Catégorie Nutritionnelle</label>
+      <input
+        type="text"
+        [(ngModel)]="nutritional.idNutri"
+        name="idNutritional"
+        class="form-control w-25"
+        readonly
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Nom Catégorie</label>
+      <input
+        type="text"
+        [(ngModel)]="nutritional.nomNutri"
+        name="nomNutritional"
+        class="form-control"
+        placeholder="Entrez un nom de catégorie..."
+        required
+      />
+    </div>
+    <div class="mt-2">
+      <button
+        type="button"
+        [disabled]="!nutritional.nomNutri"
+        class="btn btn-success"
+        (click)="saveNutritional()"
+      >
+        {{ ajout ? 'Ajouter' : 'Modifier' }}
+      </button>
+    </div>
+  </form>

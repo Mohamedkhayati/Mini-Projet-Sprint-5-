@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4 col-md-4 col-lg-4 mb-4">
+      <label class="form-label">Nutritional Categories</label>
+      <select
+        class="form-control form-control-lg"
+        id="idNutri"
+        name="idNutri"
+        [(ngModel)]="idNutritional"
+        (change)="onChange()"
+      >
+        <option value="" disabled selected>Select a nutritional category</option>
+        <option *ngFor="let nut of nutritionals" [value]="nut.idNutri">
+          {{ nut.nomNutri }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="card shadow mb-4">
+    <div class="card-body table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Dosage</th>
+            <th>Price</th>
+            <th>Brand</th>
+            <th>Creation Date</th>
+            <th>Nutritional Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngIf="supplements?.length === 0">
+            <td colspan="7" class="text-center">No supplements found for the selected category</td>
+          </tr>
+          <tr *ngFor="let supplement of supplements">
+            <td>{{ supplement.idSupplement }}</td>
+            <td>{{ supplement.nomSupplement }}</td>
+            <td>{{ supplement.dosageSupplement }}</td>
+            <td>{{ supplement.prixSupplement | currency }}</td>
+            <td>{{ supplement.marqueSupplement }}</td>
+            <td>{{ supplement.dateCreation | date: 'mediumDate' }}</td>
+            <td>{{ supplement.nutritional?.nomNutri || 'Not specified' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

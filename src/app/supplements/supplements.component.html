@@ -1,48 +1,65 @@
 <div class="container">
     <div class="card shadow mb-4">
-        <div class="card-body">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th>N°</th>
-                        <th>Id</th>
-                        <th>Nom</th>
-                        <th>Prix</th>
-                        <th>Dosage</th>
-                        <th>Quantity</th>
-                        <th>Date Création</th>
-                        <th>Nutritionnelle</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @for (supplement of supplements; track supplement.idSupplement; let index = $index; let nbr = $count; let first = $first; let last = $last) {
-                        <tr>
-                            <td>{{ index + 1 }}</td>
-                            <td>{{ supplement.idSupplement }}</td>
-                            <td>{{ supplement.nomSupplement }}</td>
-                            <td>{{ supplement.prixSupplement }}</td>
-                            <td>{{ supplement.dosageSupplement }} g</td>
-                            <td>{{ supplement.quantity }}</td>
-                            <td>{{ supplement.dateCreation | date: 'dd/MM/yyyy' }}</td>
-                            <td>{{supplement.nutritional.nomNut}}</td>
-                            <td><a class="btn btn-danger" (click)="supprimerSupplement(supplement)">Supprimer</a>
-                            <a class="btn btn-success" [routerLink]="['/updateSupplement', supplement.idSupplement]">Modifier</a></td>
-
-
-                        </tr>
-                        @if (last) {
-                            <tr>
-                                <td colspan="7"><h1>Nombre : {{ nbr }}</h1></td>
-                            </tr>
-                        }
-                    } @empty {
-                        <tr>
-                            <td colspan="7"><h1>Aucun supplement trouvé !</h1></td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+      <div class="card-body">
+  
+        <div *ngIf="loading" class="text-center">
+          <h3>Chargement...</h3>
         </div>
+  
+        <div *ngIf="errorMessage" class="alert alert-danger">
+          {{ errorMessage }}
+        </div>
+  
+        <table class="table table-striped" *ngIf="!loading && !errorMessage">
+          <thead>
+            <tr>
+              <th>N°</th>
+              <th>Id</th>
+              <th>Nom</th>
+              <th>Prix</th>
+              <th>Dosage</th>
+              <th>Marque</th>
+              <th>Date Création</th>
+              <th>Nutritionnelle</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (supplement of supplements; track supplement.idSupplement; let index = $index; let nbr = $count; let last = $last) {
+              <tr>
+                <td>{{ index + 1 }}</td>
+                <td>{{ supplement.idSupplement }}</td>
+                <td>{{ supplement.nomSupplement }}</td>
+                <td>{{ supplement.prixSupplement }}</td>
+                <td>{{ supplement.dosageSupplement }}</td>
+                <td>{{ supplement.marqueSupplement }}</td>
+                <td>{{ supplement.dateCreation | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ supplement.nutritional.nomNutri }}</td>
+                @if(authService.isAdmin()) {
+
+                <td>
+                  <a class="btn btn-danger btn-sm me-1" (click)="supprimerSupplement(supplement)">Supprimer</a>
+                  <a class="btn btn-success btn-sm" [routerLink]="['/updateSupplement', supplement.idSupplement]">Modifier</a>
+                </td>}
+              </tr>
+              @if (last) {
+                <tr>
+                  <td colspan="9" class="text-center">
+                    <h5>Nombre total : {{ nbr }}</h5>
+                  </td>
+                </tr>
+              }
+            } @empty {
+              <tr>
+                <td colspan="9" class="text-center">
+                  <h5>Aucun supplément trouvé !</h5>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+  
+      </div>
     </div>
-</div>
+  </div>
+  

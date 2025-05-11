@@ -1,45 +1,97 @@
 <div class="container">
-    <div>
-        <h2>Ajouter un Supplément :</h2>
+    <h2>Ajouter un Supplément</h2>
+    <div *ngIf="loading" class="text-center">
+      <p>Chargement...</p>
     </div>
-    <form>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <label>ID Supplément</label>
-            <input type="text" [(ngModel)]="newSupplement.idSupplement" name="idSupplement" class="form-control" required>
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Nom Supplément</label>
-            <input type="text" [(ngModel)]="newSupplement.nomSupplement" name="nomSupplement" class="form-control" required>
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <label>Prix Supplément</label>
-            <input type="number" [(ngModel)]="newSupplement.prixSupplement" name="prixSupplement" class="form-control" required min="0">
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <label>Dosage Supplément (g)</label>
-            <input type="number" [(ngModel)]="newSupplement.dosageSupplement" name="dosageSupplement" class="form-control" required min="0">
-        </div>
-        <div class="col-sm-2 col-md-2 col-lg-2">
-            <label>Quantité</label>
-            <input type="number" [(ngModel)]="newSupplement.quantity" name="quantity" class="form-control" required min="0">
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Date Création</label>
-            <input type="date" [(ngModel)]="newSupplement.dateCreation" name="dateCreation" class="form-control" required>
-        </div>
-        <div class="col-sm-4 col-md-4 col-lg-4">
-            <label>Nutritionnelle</label>
-            <select class="form-control form-control-lg" id="idNut" name="idNut" [(ngModel)]="newIdNut" required>
-                <option *ngFor="let nut of nutritional; trackBy: trackByNut" [value]="nut.idNut">
-                    {{ nut.nomNut }}
-                </option>
-            </select>
-        </div>
-        <div class="mt-2">
-            <button type="submit" (click)="addSupplement()" class="btn btn-success">Ajouter</button>
-            <div>
-                <h3>{{ msg }}</h3>
-            </div>
-        </div>
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+    <div *ngIf="successMessage" class="alert alert-success">
+      {{ successMessage }}
+    </div>
+    <form (ngSubmit)="addSupplement()" #suppForm="ngForm">
+      <div hidden class="form-group">
+        <label>ID Supplément</label>
+        <input
+          type="number"
+          [(ngModel)]="newSupplement.idSupplement"
+          name="idSupplement"
+          class="form-control"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label>Nom Supplément</label>
+        <input
+          type="text"
+          [(ngModel)]="newSupplement.nomSupplement"
+          name="nomSupplement"
+          class="form-control"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label>Prix Supplément</label>
+        <input
+          type="number"
+          [(ngModel)]="newSupplement.prixSupplement"
+          name="prixSupplement"
+          class="form-control"
+          required
+          min="0"
+        >
+      </div>
+      <div class="form-group">
+        <label>Dosage Supplément</label>
+        <input
+          type="text"
+          [(ngModel)]="newSupplement.dosageSupplement"
+          name="dosageSupplement"
+          class="form-control"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label>Marque Supplément</label>
+        <input
+          type="text"
+          [(ngModel)]="newSupplement.marqueSupplement"
+          name="marqueSupplement"
+          class="form-control"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label>Date Création</label>
+        <input
+          type="date"
+          [(ngModel)]="newSupplement.dateCreation"
+          name="dateCreation"
+          class="form-control"
+          required
+        >
+      </div>
+      <div class="form-group">
+        <label>Nutritionnelle</label>
+        <select
+          [(ngModel)]="newIdNut"
+          name="idNut"
+          class="form-control"
+          required
+        >
+          <option [ngValue]="null" disabled>Sélectionnez une catégorie</option>
+          <option *ngFor="let nut of nutritionals; trackBy: trackByNut" [ngValue]="nut.idNutri">
+            {{ nut.nomNutri }}
+          </option>
+        </select>
+      </div>
+      <div class="mt-2">
+        <button
+          type="submit"
+          class="btn btn-success"
+        >
+          Ajouter
+        </button>
+      </div>
     </form>
-</div>
+  </div>
